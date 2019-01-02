@@ -9,11 +9,10 @@ def index():
 @app.route("/peer", methods=['GET'])
 def peer():
     data = {
-     "error": 'Please supply a zipcode using the parameter zip',
+    "name": "",
      "CBSA": "",
-     "2014": "",
-     "2015": "",
-     "name": "",
+     "population": {},
+     "error": 'Please supply a zipcode using the parameter zip'
      }
     zipcode = request.args.get('zip', 0)
     if zipcode != 0:
