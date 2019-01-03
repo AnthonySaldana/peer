@@ -1,6 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, flash, redirect, url_for
+from werkzeug import secure_filename
 import csv
+import os
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route("/")
 def index():
@@ -46,3 +49,22 @@ def peer():
                         }
 
     return jsonify(data)
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect('/peer')
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect('/peer')
+        if file:
+            filename = secure_filename(file.filename)
+            file.save('cbsa_to_msa.csv')
+            flash('File Updated!!!')
+    return "File updated!!!"
